@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <title>สมัครสมาชิก</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to right, #e0f7fa, #f0f4f8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        
+        .register-container {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        
+        button:hover {
+            background-color: #1976D2;
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+        .error {
+            color: red;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="register-container">
+        <h2>สมัครสมาชิก</h2>
+        <form id="registerForm">
+            <input type="text" id="username" placeholder="ชื่อผู้ใช้" required>
+            <input type="email" id="email" placeholder="อีเมล" required>
+            <input type="password" id="password" placeholder="รหัสผ่าน" required>
+            <input type="password" id="confirmPassword" placeholder="ยืนยันรหัสผ่าน" required>
+            <p id="errorMsg" class="error"></p>
+            <button type="submit">สมัครสมาชิก</button>
+        </form>
+        <div class="login-link">
+            <a href="login.html">กลับเข้าสู่ระบบ</a>
+        </div>
+    </div>
+
+    <script>
+        const registerForm = document.getElementById('registerForm');
+        const errorMsg = document.getElementById('errorMsg');
+
+        registerForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (password !== confirmPassword) {
+                errorMsg.textContent = "รหัสผ่านไม่ตรงกัน!";
+                return;
+            }
+
+            // บันทึกข้อมูลใน localStorage (แบบจำลอง ไม่ใช่ server จริง)
+            const user = {
+                username,
+                email,
+                password
+            };
+            localStorage.setItem('user', JSON.stringify(user));
+
+            // ล้างฟอร์ม และไปหน้า login
+            alert("สมัครสมาชิกสำเร็จ!");
+            window.location.href = "login.html";
+        });
+    </script>
+</body>
+
+</html>

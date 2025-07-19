@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ประวัติการเบิกเงิน</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(to right, #e3f2fd, #ffffff);
+            margin: 0;
+            padding: 30px 10px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: #ffffff;
+            padding: 40px 30px;
+            border-radius: 16px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            text-align: center;
+            font-size: 28px;
+            color: #1565c0;
+            margin-bottom: 30px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        th,
+        td {
+            border: 1px solid #d0d7de;
+            padding: 12px 8px;
+            text-align: center;
+            font-size: 15px;
+        }
+        
+        th {
+            background-color: #90caf9;
+            color: #0d47a1;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f4f6f8;
+        }
+        
+        .buttons {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .button {
+            background-color: #1976d2;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: bold;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.25s ease;
+            font-size: 16px;
+        }
+        
+        .button:hover {
+            background-color: #0d47a1;
+        }
+        
+        .no-data {
+            text-align: center;
+            color: #757575;
+            font-size: 1.1rem;
+            padding-top: 20px;
+        }
+        
+        @media print {
+            .buttons {
+                display: none;
+            }
+            body {
+                background: white;
+                margin: 0;
+            }
+            .container {
+                box-shadow: none;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>📋 ประวัติการเบิกเงิน</h2>
+        <div id="historyContainer"></div>
+
+        <div class="buttons">
+            <a href="form.html" class="button">➕ เพิ่มรายการเบิกใหม่</a>
+            <button onclick="window.print()" class="button">🖨️ พิมพ์ / บันทึก PDF</button>
+        </div>
+    </div>
+
+    <script>
+        const container = document.getElementById('historyContainer');
+        const history = JSON.parse(localStorage.getItem("withdrawHistory") || "[]");
+
+        if (history.length === 0) {
+            container.innerHTML = "<p class='no-data'>ยังไม่มีข้อมูลการเบิกเงิน</p>";
+        } else {
+            let tableHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>วันที่</th>
+              <th>รหัสนักศึกษา</th>
+              <th>ชื่อ-นามสกุล</th>
+              <th>จำนวนเงิน (บาท)</th>
+              <th>ธนาคาร</th>
+              <th>เลขบัญชี</th>
+              <th>หมายเหตุ</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+            history.reverse().forEach(entry => {
+                tableHTML += `
+          <tr>
+            <td>${entry.date}</td>
+            <td>${entry.student_id || "-"}</td>
+            <td>${entry.name}</td>
+            <td>${entry.amount}</td>
+            <td>${entry.bank}</td>
+            <td>${entry.account_number}</td>
+            <td>${entry.note || "-"}</td>
+          </tr>
+        `;
+            });
+
+            tableHTML += `</tbody></table>`;
+            container.innerHTML = tableHTML;
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <title>แบบฟอร์มเบิกเงิน</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to right, #e0f2f1, #ffffff);
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 550px;
+            margin: auto;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 18px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2e7d32;
+        }
+        
+        input,
+        select,
+        textarea,
+        button {
+            width: 100%;
+            padding: 12px;
+            margin: 12px 0;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+        
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #4CAF50;
+            outline: none;
+            background-color: #f1f8e9;
+        }
+        
+        textarea {
+            resize: vertical;
+        }
+        
+        button {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+            border: none;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #388e3c;
+        }
+        
+        .success {
+            text-align: center;
+            color: green;
+            display: none;
+            margin-top: 20px;
+        }
+        
+        .nav-link {
+            display: block;
+            text-align: center;
+            margin-top: 25px;
+            font-weight: bold;
+            text-decoration: none;
+            color: #388e3c;
+        }
+        
+        .nav-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>แบบฟอร์มเบิกเงิน</h2>
+        <form id="withdrawForm">
+            <input type="text" name="student_id" placeholder="รหัสนักศึกษา" required pattern="\d{6,20}" title="กรอกรหัสนักศึกษาเป็นตัวเลข">
+            <input type="text" name="name" placeholder="ชื่อ-นามสกุล" required>
+            <input type="number" name="amount" placeholder="จำนวนเงิน (บาท)" required min="1">
+            <select name="bank" required>
+        <option value="">เลือกธนาคาร</option>
+        <option value="กรุงไทย">กรุงไทย</option>
+        <option value="กสิกรไทย">กสิกรไทย</option>
+        <option value="ไทยพาณิชย์">ไทยพาณิชย์</option>
+        <option value="ออมสิน">ออมสิน</option>
+        <option value="อื่นๆ">อื่นๆ</option>
+      </select>
+            <input type="text" name="account_number" placeholder="เลขบัญชีธนาคาร" required pattern="\d{6,20}">
+            <textarea name="note" placeholder="หมายเหตุเพิ่มเติม (ไม่จำเป็น)"></textarea>
+            <button type="submit">💾 ส่งข้อมูล</button>
+        </form>
+        <div class="success" id="successMessage">✅ ส่งข้อมูลสำเร็จ!</div>
+        <a href="history.html" class="nav-link">📄 ดูประวัติการเบิกเงิน</a>
+    </div>
+
+    <script>
+        document.getElementById("withdrawForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const form = e.target;
+            const data = new FormData(form);
+
+            const entry = {
+                student_id: data.get("student_id"),
+                name: data.get("name"),
+                amount: data.get("amount"),
+                bank: data.get("bank"),
+                account_number: data.get("account_number"),
+                note: data.get("note"),
+                date: new Date().toLocaleString()
+            };
+
+            const history = JSON.parse(localStorage.getItem("withdrawHistory") || "[]");
+            history.push(entry);
+            localStorage.setItem("withdrawHistory", JSON.stringify(history));
+
+            document.getElementById("successMessage").style.display = "block";
+            form.reset();
+
+            setTimeout(() => {
+                window.location.href = "history.html";
+            }, 1500);
+        });
+    </script>
+</body>
+
+</html>

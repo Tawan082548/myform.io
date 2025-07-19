@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <title>เข้าสู่ระบบ</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to right, #f0f4f8, #e0f7fa);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        
+        button:hover {
+            background-color: #388e3c;
+        }
+        
+        .register-link {
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+        .error {
+            color: red;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <h2>เข้าสู่ระบบ</h2>
+        <form id="loginForm">
+            <input type="email" id="email" placeholder="อีเมล" required>
+            <input type="password" id="password" placeholder="รหัสผ่าน" required>
+            <p id="errorMsg" class="error"></p>
+            <button type="submit">เข้าสู่ระบบ</button>
+        </form>
+        <div class="register-link">
+            <a href="register.html">ยังไม่มีบัญชี? สมัครสมาชิก</a>
+        </div>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const errorMsg = document.getElementById('errorMsg');
+
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+
+            const storedUser = JSON.parse(localStorage.getItem('user'));
+
+            if (!storedUser || storedUser.email !== email || storedUser.password !== password) {
+                errorMsg.textContent = "อีเมลหรือรหัสผ่านไม่ถูกต้อง";
+                return;
+            }
+
+            // เก็บสถานะการล็อกอิน
+            localStorage.setItem('isLoggedIn', 'true');
+            alert("เข้าสู่ระบบสำเร็จ!");
+            window.location.href = "form.html"; // ไปหน้าฟอร์มหลังล็อกอิน
+        });
+    </script>
+</body>
+
+</html>
